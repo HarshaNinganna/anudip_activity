@@ -1,0 +1,79 @@
+class BiriyaniAdda:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+
+class Order:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, biriyani):
+        self.items.append(biriyani)
+        print(f" Added {biriyani.name} to your order.")
+
+    def total(self):
+        return sum(item.price for item in self.items)
+
+    def show_order(self):
+        if not self.items:
+            print(" No items in your order.")
+            return
+        print("\n Your Order:")
+        for i, item in enumerate(self.items, 1):
+            print(f"{i}. {item.name} - ₹{item.price}")
+        print(f"\nTotal: ₹{self.total()}")
+
+    def checkout(self):
+        if not self.items:
+            print(" Your cart is empty.")
+            return
+
+        self.show_order()
+        confirm = input("\nProceed to checkout? (yes/no): ").strip().lower()
+        if confirm == "yes":
+            print(" Your order is confirmed. Thank you!")
+            self.items.clear()
+        else:
+            print(" Order is cancelled.")
+
+
+def main():
+    menu = [
+        BiriyaniAdda("Chicken Donne Biriyani", 180),
+        BiriyaniAdda("Nati Style Mutton Biriyani", 289),
+        BiriyaniAdda("Mushroom Biriyani", 129),
+        BiriyaniAdda("Egg Biriyani", 169),
+        BiriyaniAdda("Chicken Kabab", 189),
+        BiriyaniAdda("Mutton Chops", 289),
+        BiriyaniAdda("Chicken Meals (Unlimited)", 249),
+        BiriyaniAdda("Mutton Meals (Unlimited)", 419)
+    ]
+
+    order = Order()
+
+    while True:
+        print("\n---------- Biriyani Adda Menu ----------")
+        for i, biriyani in enumerate(menu, 1):
+            print(f"{i}. {biriyani.name} - ₹{biriyani.price}")
+        print("9. View Order")
+        print("10. Checkout")
+        print("11. Exit")
+
+        choice = input("Choose an option (1-11): ").strip()
+
+        if choice.isdigit() and 1 <= int(choice) <= len(menu):
+            order.add_item(menu[int(choice) - 1])
+        elif choice == '9':
+            order.show_order()
+        elif choice == '10':
+            order.checkout()
+        elif choice == '11':
+            print(" Thanks for visiting. Goodbye!")
+            break
+        else:
+            print(" Invalid choice. Try again!")
+
+
+if __name__ == "__main__":
+    main()
