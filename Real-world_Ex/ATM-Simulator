@@ -1,0 +1,56 @@
+class InsufficientFundsError(Exception):
+    pass
+
+class SmartBank:
+    def __init__(self, balance=0):
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError("Deposit must be greater than 0")
+        self.balance += amount
+        print(f" Deposited ₹{amount}. New balance: ₹{self.balance}")
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError("Withdrawal must be greater than 0")
+        if amount > self.balance:
+            raise InsufficientFundsError(" Insufficient funds!")
+        self.balance -= amount
+        print(f" Withdrawn ₹{amount}. New balance: ₹{self.balance}")
+
+    def check_balance(self):
+        print(f" Current Balance: ₹{self.balance}")
+
+def main():
+    bank = SmartBank(1000)
+
+    while True:
+        print("\n--- SmartBank Menu ---")
+        print("1. Check Balance\n2. Deposit\n3. Withdraw\n4. Exit")
+
+        try:
+            choice = int(input("Enter choice (1-4): "))
+            if choice == 1:
+                bank.check_balance()
+            elif choice == 2:
+                amt = float(input("Enter amount to deposit: "))
+                bank.deposit(amt)
+            elif choice == 3:
+                amt = float(input("Enter amount to withdraw: "))
+                bank.withdraw(amt)
+            elif choice == 4:
+                print(" Thank you for using SmartBank!")
+                break
+            else:
+                print(" Invalid choice. Try again.")
+
+        except ValueError as ve:
+            print(" Value Error:", ve)
+        except InsufficientFundsError as ie:
+            print("!", ie)
+        except Exception as e:
+            print("! Unexpected error:", e)
+
+if __name__ == "__main__":
+    main()
